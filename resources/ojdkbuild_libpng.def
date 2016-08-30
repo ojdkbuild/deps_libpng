@@ -1,0 +1,38 @@
+; Copyright 2016, akashche at redhat.com
+;
+; Licensed under the Apache License, Version 2.0 (the "License");
+; you may not use this file except in compliance with the License.
+; You may obtain a copy of the License at
+;
+; http://www.apache.org/licenses/LICENSE-2.0
+;
+; Unless required by applicable law or agreed to in writing, software
+; distributed under the License is distributed on an "AS IS" BASIS,
+; WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+; See the License for the specific language governing permissions and
+; limitations under the License.
+
+EXPORTS
+    png_sig_cmp
+    png_error
+    png_get_io_ptr
+    png_destroy_read_struct 
+    png_read_end
+    png_read_image
+    png_get_rowbytes
+    png_read_update_info
+    png_set_interlace_handling
+    png_set_gamma 
+    png_get_gAMA
+    png_set_gray_to_rgb
+    png_set_strip_16
+    png_set_filler
+    png_set_tRNS_to_alpha
+    png_set_expand
+    png_get_IHDR
+    png_read_info
+    png_set_sig_bytes
+    png_set_read_fn
+    png_set_longjmp_fn
+    png_create_info_struct
+    png_create_read_struct

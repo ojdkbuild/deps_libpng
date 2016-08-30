@@ -22,15 +22,20 @@ set ( ${PROJECT_NAME}_OJDKBUILD_VERSION 1.5.13-1 )
 # static library
 add_subdirectory ( ${CMAKE_CURRENT_LIST_DIR}/resources/libpng_1513_cmake ${CMAKE_CURRENT_BINARY_DIR}/lookaside_libpng )
 
+set ( ${PROJECT_NAME}_DEPS zlib )
+ojdkbuild_pkg_check_modules ( ${PROJECT_NAME}_DEPS_PC REQUIRED ${PROJECT_NAME}_DEPS )
+
 # shared_library
 add_library ( ${PROJECT_NAME} SHARED ${CMAKE_CURRENT_LIST_DIR}/resources/${PROJECT_NAME}.def )
 set_target_properties ( ${PROJECT_NAME} PROPERTIES LINKER_LANGUAGE C )
-target_link_libraries ( ${PROJECT_NAME} lookaside_libpng )
+target_link_libraries ( ${PROJECT_NAME} 
+    lookaside_libpng
+    ${${PROJECT_NAME}_DEPS_PC_LIBRARIES} )
 
 # pkg-config
 set ( ${PROJECT_NAME}_MODULE libpng )
 set ( ${PROJECT_NAME}_BUNDLE_LIB_PATH ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_SHARED_LIBRARY_PREFIX}${PROJECT_NAME}${CMAKE_SHARED_LIBRARY_SUFFIX} )
-set ( ${PROJECT_NAME}_PC_CFLAGS "-I${CMAKE_CURRENT_LIST_DIR}/../../lookaside/libpng" )
+set ( ${PROJECT_NAME}_PC_CFLAGS "-I${CMAKE_CURRENT_LIST_DIR}/../../lookaside/libpng -I${CMAKE_CURRENT_LIST_DIR}/resources/libpng_1513_cmake/include" )
 set ( ${PROJECT_NAME}_PC_LIBS "-L${CMAKE_LIBRARY_OUTPUT_DIRECTORY} -l${PROJECT_NAME}" )
 configure_file ( ${CMAKE_CURRENT_LIST_DIR}/../../resources/cmake/pkg-config.in 
         ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/pkgconfig/libpng.pc )
