@@ -19,23 +19,24 @@ include ( ${CMAKE_CURRENT_LIST_DIR}/../../resources/cmake/ojdkbuild_common.cmake
 project ( ojdkbuild_libpng C CXX )
 set ( ${PROJECT_NAME}_OJDKBUILD_VERSION 1.5.13-1 )
 
+configure_file ( ${OJDKBUILD_DIR}/resources/buildres/deplib.rc
+        ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.rc )
+
 # static library
-add_subdirectory ( ${CMAKE_CURRENT_LIST_DIR}/resources/libpng_1513_cmake ${CMAKE_CURRENT_BINARY_DIR}/lookaside_libpng )
+ojdkbuild_add_external ( ${OJDKBUILD_DIR}/external/libpng )
 
-set ( ${PROJECT_NAME}_DEPS zlib )
-ojdkbuild_pkg_check_modules ( ${PROJECT_NAME}_DEPS_PC REQUIRED ${PROJECT_NAME}_DEPS )
-
-# shared_library
-add_library ( ${PROJECT_NAME} SHARED ${CMAKE_CURRENT_LIST_DIR}/resources/${PROJECT_NAME}.def )
+# shared library
+add_library ( ${PROJECT_NAME} SHARED
+        ${CMAKE_CURRENT_LIST_DIR}/resources/${PROJECT_NAME}.def
+        ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.rc )
 set_target_properties ( ${PROJECT_NAME} PROPERTIES LINKER_LANGUAGE C )
-target_link_libraries ( ${PROJECT_NAME} 
-    lookaside_libpng
-    ${${PROJECT_NAME}_DEPS_PC_LIBRARIES} )
+target_link_libraries ( ${PROJECT_NAME} png z )
+set_property ( TARGET ${PROJECT_NAME} APPEND_STRING PROPERTY LINK_FLAGS "/manifest:no" )
 
 # pkg-config
-set ( ${PROJECT_NAME}_MODULE libpng )
+set ( ${PROJECT_NAME}_MODULE ojdkbuild_libpng )
 set ( ${PROJECT_NAME}_BUNDLE_LIB_PATH ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_SHARED_LIBRARY_PREFIX}${PROJECT_NAME}${CMAKE_SHARED_LIBRARY_SUFFIX} )
-set ( ${PROJECT_NAME}_PC_CFLAGS "-I${CMAKE_CURRENT_LIST_DIR}/../../lookaside/libpng -I${CMAKE_CURRENT_LIST_DIR}/resources/libpng_1513_cmake/include" )
+set ( ${PROJECT_NAME}_PC_CFLAGS "-I${png_LOOKASIDE_DIR} -I${OJDKBUILD_DIR}/external/libpng/resources/libpng_cmake/include" )
 set ( ${PROJECT_NAME}_PC_LIBS "-L${CMAKE_LIBRARY_OUTPUT_DIRECTORY} -l${PROJECT_NAME}" )
 configure_file ( ${CMAKE_CURRENT_LIST_DIR}/../../resources/cmake/pkg-config.in 
-        ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/pkgconfig/libpng.pc )
+        ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/pkgconfig/ojdkbuild_libpng.pc )
