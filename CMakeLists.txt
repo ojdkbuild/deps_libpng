@@ -35,7 +35,6 @@ set_property ( TARGET ${PROJECT_NAME} APPEND_STRING PROPERTY LINK_FLAGS "/manife
 
 # pkg-config
 set ( ${PROJECT_NAME}_MODULE ojdkbuild_libpng )
-set ( ${PROJECT_NAME}_BUNDLE_LIB_PATH ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_SHARED_LIBRARY_PREFIX}${PROJECT_NAME}${CMAKE_SHARED_LIBRARY_SUFFIX} )
 set ( ${PROJECT_NAME}_PC_CFLAGS "-I${png_LOOKASIDE_DIR} -I${OJDKBUILD_DIR}/external/libpng/resources/libpng_cmake/include" )
 set ( ${PROJECT_NAME}_PC_LIBS "-L${CMAKE_LIBRARY_OUTPUT_DIRECTORY} -l${PROJECT_NAME}" )
 configure_file ( ${CMAKE_CURRENT_LIST_DIR}/../../resources/cmake/pkg-config.in 
